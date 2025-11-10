@@ -1,0 +1,70 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Random random = new Random();
+
+        // Генеруємо випадкове число з 6 цифр
+        int numberLength = 6;
+        string secret = "";
+        for (int i = 0; i < numberLength; i++)
+            secret += random.Next(0, 10).ToString();
+
+        char[] display = new string('_', numberLength).ToCharArray();
+        int attempts = 5;
+
+        Console.WriteLine("=== ГРА: Вгадай число ===");
+        Console.WriteLine($"Я загадав число з {numberLength} цифр.");
+        Console.WriteLine("У вас є 5 спроб, щоб відгадати цифри.");
+        Console.WriteLine(new string(display));
+        Console.WriteLine();
+
+        while (attempts > 0)
+        {
+            Console.Write("Введіть цифру (0-9): ");
+            string input = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(input) || !char.IsDigit(input[0]))
+            {
+                Console.WriteLine("Введіть одну цифру!");
+                continue;
+            }
+
+            char guess = input[0];
+            bool found = false;
+
+            for (int i = 0; i < numberLength; i++)
+            {
+                if (secret[i] == guess)
+                {
+                    display[i] = guess;
+                    found = true;
+                }
+            }
+
+            if (found)
+            {
+                Console.WriteLine("✅ Є така цифра!");
+            }
+            else
+            {
+                attempts--;
+                Console.WriteLine($"❌ Такої цифри немає. Залишилось спроб: {attempts}");
+            }
+
+            Console.WriteLine(new string(display));
+            Console.WriteLine();
+
+            // Перевірка на перемогу
+            if (new string(display) == secret)
+            {
+                Console.WriteLine($"🎉 Ви вгадали число: {secret}!");
+                return;
+            }
+        }
+
+        Console.WriteLine($"😢 Ви програли. Загадане число було: {secret}");
+    }
+}
