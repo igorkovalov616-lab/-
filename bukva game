@@ -1,0 +1,63 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Масив слів для гри
+        string[] words = { "kitten", "computer", "flower", "planet", "school", "bottle", "holiday" };
+
+        // Ініціалізація генератора випадкових чисел
+        Random random = new Random();
+        string word = words[random.Next(words.Length)];
+        char[] guessedWord = new string('_', word.Length).ToCharArray();
+
+        int attempts = 5; // кількість спроб
+        bool isGuessed = false;
+
+        Console.WriteLine("🎮 ГРА: Вгадай слово!");
+        Console.WriteLine($"Слово має {word.Length} букв: {new string(guessedWord)}");
+
+        while (attempts > 0 && !isGuessed)
+        {
+            Console.Write("\nВведіть літеру: ");
+            char guess = Char.ToLower(Console.ReadKey().KeyChar);
+            Console.WriteLine();
+
+            bool correct = false;
+
+            for (int i = 0; i < word.Length; i++)
+            {
+                if (word[i] == guess)
+                {
+                    guessedWord[i] = guess;
+                    correct = true;
+                }
+            }
+
+            if (correct)
+            {
+                Console.WriteLine($"✅ Є така літера! {new string(guessedWord)}");
+            }
+            else
+            {
+                attempts--;
+                Console.WriteLine($"❌ Такої літери немає! Залишилось спроб: {attempts}");
+            }
+
+            if (new string(guessedWord) == word)
+            {
+                isGuessed = true;
+            }
+        }
+
+        if (isGuessed)
+        {
+            Console.WriteLine($"\n🎉 Вітаємо! Ви вгадали слово: {word}");
+        }
+        else
+        {
+            Console.WriteLine($"\n😢 Ви програли! Загадане слово: {word}");
+        }
+    }
+}
